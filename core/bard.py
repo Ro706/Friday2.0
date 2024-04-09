@@ -10,10 +10,7 @@ def speak(text):
     engine.say(text)
     engine.runAndWait()
 def chat(quary,key):
-        password = b'gAAAAABmEo5WQYsnjRvqreGKbEe6iEz3KYlQ3nFX5wv8ZQDcDDkeknAnxrLkICxV1qcdCZIwDzLS07liWICvHezvJrTex5s0gRtknIfyNgWgtcPds1WNSBbVlF-tf1M7CNJ9YHdteRsL'
-        f_obj = Fernet(key)
-        dec_key = f_obj.decrypt(password).decode()
-        API_KEY = dec_key
+        API_KEY = key
         palm.configure(api_key = API_KEY)
         prompt = quary
         response=palm.chat(messages=prompt,temperature=0.2,context="Speak like a AI assistant")

@@ -229,6 +229,6 @@ if __name__ == "__main__":
             # updating user if query is not matched
             speak("Hmmm.....")
             if (query != 'None'):
-                bard.chat(query,secure.getdata())
+                bard.chat(query,secure.bardapi())
             else:
                 speak("Sorry, I didn't get that. Can you please repeat?")

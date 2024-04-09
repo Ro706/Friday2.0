@@ -9,7 +9,7 @@ from cryptography.fernet import Fernet
 
 def getdata():
     # Generate or retrieve a random hash key
-    key =  "ask admin for key"
+    key = 'ASK ADMIN FOR KEY'
     return key
 
 def realpassword():
@@ -24,13 +24,14 @@ def bardapi():
     f_obj = Fernet(key)
     dec_key = f_obj.decrypt(password).decode()
     return dec_key
+    
 def getdatamail():
     # Generate or retrieve a random hash key
     key = getdata()
     password = b'gAAAAABmFXUJUjhr2V8KxeOebDaTlKs3jf8b0s0EykT7K5lFJLqBlQPaxInSsirkCoCr_k8uFqase5YTBWp88yjmR54FHJ381mxg8UF0Y1uaX6wL5QWaIb8='
     f_obj = Fernet(key)
     dec_key = f_obj.decrypt(password).decode()
-    print(dec_key)
+    return dec_key
     
 def decrypt_password(enc_message, key):
     # Decrypt an encrypted password using the Fernet encryption scheme
@@ -48,3 +49,4 @@ def password_is_correct(password):
     key = getdata()
     real_password = realpassword()
     return check_password(real_password, password, key)
+
