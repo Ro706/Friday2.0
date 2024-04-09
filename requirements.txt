@@ -1,0 +1,7 @@
+speechrecognition
+pyttsx3
+psutil
+pyjokes
+wikipedia
+cryptography
+google.generativeai
