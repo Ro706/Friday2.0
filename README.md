@@ -42,7 +42,7 @@ Ensure your system has a microphone connected and configured properly for voice 
 - Add your name here if you contribute to this project.
 
 ## Issues
-- If you encounter any issues or have suggestions for improvements, please feel free to open an issue on the [GitHub repository](https://github.com/Ro706/Friday/issues).
+- If you encounter any issues or have suggestions for improvements, please feel free to open an issue on the [GitHub repository](https://github.com/Ro706/Friday2.0/issues).
 
 ## License
 This project is licensed under the [MIT License](LICENSE).
