@@ -10,6 +10,7 @@ import wikipedia
 import webbrowser
 import core.bard as bard
 import core.mail as mail
+import core.PhotoCaptureApp as photo
 from cryptography.fernet import Fernet
 import core.security.secure as secure
 import core.news as news
@@ -259,6 +260,9 @@ if __name__ == "__main__":
             except Exception as e:
                 print(e)
                 speak("I am not able to send this email")
+        elif "photo" in query:
+            # Photo section: taking photo
+            photo.create_gui()
         elif "joke" in query:
             # Jokes section: telling jokes
             joke = pyjokes.get_joke()
@@ -277,4 +281,9 @@ if __name__ == "__main__":
             if query != 'None':
                 bard.chat(query, secure.bardapi())
             else:
-                speak("Sorry, I didn't get that. Can you please repeat?")
+                continue
+            
+# End of the program
+# Thank you!
+# Friday: Your Personal Assistant in Python
+# https://github.com/Ro706/Friday2.0

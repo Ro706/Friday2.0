@@ -1,7 +1,7 @@
 from cryptography.fernet import Fernet
 def getdata():
     # Generate or retrieve a random hash key
-    key = "Ask for it from the system admin"
+    key = "ask it from the system admin"
     return key
 
 def realpassword():
