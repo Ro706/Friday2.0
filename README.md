@@ -1,6 +1,7 @@
 # Friday: Your Personal Assistant in Python
 
 Friday is a personal assistant application written in Python. It can perform a variety of tasks such as recognizing speech, checking system information, playing games, fetching news, sending emails, telling jokes, and much more. This project integrates various Python libraries and custom modules to provide a comprehensive assistant experience.
+
 ---
 ## Features
 ### 1. **Speech Recognition**
