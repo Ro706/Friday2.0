@@ -1,7 +1,11 @@
-speechrecognition
-pyttsx3
-psutil
-pyjokes
-wikipedia
-cryptography
+pymysql==1.0.2
+SpeechRecognition==3.8.1
+pyttsx3==2.90
+psutil==5.8.0
+pyjokes==0.6.0
+wikipedia-api==0.5.4
+cryptography==3.4.7
+requests==2.25.1
+Pillow==8.2.0
+PyQt5==5.15.4
 google.generativeai
