@@ -1,22 +1,73 @@
 # Friday: Your Personal Assistant in Python
 
 Friday is a personal assistant application written in Python. It can perform a variety of tasks such as recognizing speech, checking system information, playing games, fetching news, sending emails, telling jokes, and much more. This project integrates various Python libraries and custom modules to provide a comprehensive assistant experience.
-
+---
 ## Features
+### 1. **Speech Recognition**
+- **Functionality**: Converts spoken words into text.
+- **Implementation**: Uses the `speech_recognition` library to capture audio from the microphone and recognize speech using Google's speech recognition API.
 
-- **Speech Recognition**: Convert speech to text.
-- **Text-to-Speech**: Convert text to speech.
-- **Password Authentication**: Secure access to the assistant.
-- **System Monitoring**: Check CPU and RAM usage.
-- **Weather Updates**: Get current weather information.
-- **Schedule Management**: Retrieve daily schedules from a MySQL database.
-- **Web Browsing**: Open various websites like YouTube, Google, Stack Overflow, and GitHub.
-- **Games**: Play tic-tac-toe and ghost game.
-- **Email**: Send emails.
-- **Jokes**: Tell jokes.
-- **Wikipedia**: Search and retrieve information from Wikipedia.
-- **News**: Get the latest news.
-- **Photo Capture**: Take photos using the system camera.
+### 2. **Text-to-Speech**
+- **Functionality**: Converts text into spoken words.
+- **Implementation**: Uses the `pyttsx3` library to convert text to speech, allowing Friday to communicate with the user.
+
+### 3. **Password Authentication**
+- **Functionality**: Ensures secure access to the assistant.
+- **Implementation**: Prompts the user for a password, which is encrypted and verified using the `cryptography` library and custom security methods.
+
+### 4. **System Monitoring**
+- **Functionality**: Checks and reports CPU and RAM usage.
+- **Implementation**: Uses the `psutil` library to retrieve and display detailed information about the system's CPU and RAM usage.
+
+### 5. **Weather Updates**
+- **Functionality**: Provides current weather information.
+- **Implementation**: Fetches weather data from an API (such as OpenWeatherMap) and reports it to the user. This requires an API key and an internet connection.
+
+### 6. **Schedule Management**
+- **Functionality**: Retrieves daily schedules from a MySQL database.
+- **Implementation**: Connects to a MySQL database using the `pymysql` library to fetch and display the user's schedule for the current day.
+
+### 7. **Web Browsing**
+- **Functionality**: Opens various websites like YouTube, Google, Stack Overflow, and GitHub.
+- **Implementation**: Uses the `webbrowser` library to open URLs in the default web browser.
+
+### 8. **Games**
+- **Functionality**: Offers a selection of games to play, such as tic-tac-toe and ghost game.
+- **Implementation**: Integrates custom game modules (`game1` and `game2`) and opens a web-based number game using the `webbrowser` library.
+
+### 9. **Email**
+- **Functionality**: Sends emails to specified recipients.
+- **Implementation**: Uses a custom module (`core.mail`) to handle email composition and sending, requiring the user's input for email content and recipient address.
+
+### 10. **Jokes**
+- **Functionality**: Tells random jokes.
+- **Implementation**: Uses the `pyjokes` library to fetch and read out a random joke.
+
+### 11. **Wikipedia**
+- **Functionality**: Searches Wikipedia and retrieves summaries.
+- **Implementation**: Uses the `wikipedia` library to search for a query and fetch a brief summary of the topic.
+
+### 12. **News**
+- **Functionality**: Provides the latest news updates.
+- **Implementation**: Uses a custom module (`core.news`) to fetch and report news from a news API. This requires an API key and an internet connection.
+
+### 13. **Photo Capture**
+- **Functionality**: Takes photos using the system's camera.
+- **Implementation**: Uses a custom module (`core.PhotoCaptureApp`) to create a graphical interface for capturing photos.
+
+### 14. **Time and Date**
+- **Functionality**: Provides the current time and date.
+- **Implementation**: Uses the `time` module to get and report the current time and date.
+
+### 15. **Greeting**
+- **Functionality**: Greets the user based on the time of day.
+- **Implementation**: Uses a custom module (`core.wishme`) to determine the appropriate greeting and speaks it to the user.
+
+### 16. **Chat with Bard**
+- **Functionality**: Engages in a conversation with the user using the Bard API.
+- **Implementation**: Uses a custom module (`core.bard`) to handle chat interactions, providing responses to user queries.
+
+---
 
 ## Installation
 
