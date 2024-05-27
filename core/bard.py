@@ -13,7 +13,7 @@ def chat(quary,key):
         API_KEY = key
         palm.configure(api_key = API_KEY)
         prompt = quary
-        response=palm.chat(messages=prompt,temperature=0.2,context="Speak like a AI assistant")
+        response=palm.chat(messages=prompt,temperature=0.2,context="Speak like a AI assistant and your name is friday.")
         count = 0
         for message in response.messages:
             for i in message['content'].split('\n'):
