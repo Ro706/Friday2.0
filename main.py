@@ -147,6 +147,34 @@ def get_schedule(day: str) -> List[Tuple[str, str]]:
         print(f"Error: {err}")
         return []
 
+def get_schedule_by_time(time: str) -> List[Tuple[str, str]]:
+    try:
+        # Connect to the MySQL database
+        conn = pymysql.connect(
+            host='localhost',
+            user='root',
+            password='root123',
+            database='friday'
+        )
+        cursor = conn.cursor()
+
+        # Query to fetch the schedule for the given time
+        query = "SELECT day, subject FROM timetable_a_sem1 WHERE time = %s"
+        cursor.execute(query, (time,))
+        if cursor.rowcount == 0:
+            speak("free time boss")
+        # Fetch all results
+        schedule = cursor.fetchall()
+
+        # Close the cursor and connection
+        cursor.close()
+        conn.close()
+
+        return schedule
+
+    except pymysql.MySQLError as err:
+        print(f"Error: {err}")
+        return []
 # Main class for the main program
 if __name__ == "__main__":
     wish.wishme()
@@ -268,7 +296,7 @@ if __name__ == "__main__":
             joke = pyjokes.get_joke()
             print(joke)
             speak(joke)
-        elif "schedule" in query:
+        elif "complete schedule" in query:
             # Schedule section: fetching schedule from the database
             today = datetime.today()
             schedule = get_schedule(today)
@@ -276,6 +304,17 @@ if __name__ == "__main__":
             for time, subject in schedule:
                 print(f"Time: {time}, Subject: {subject}")
                 speak(f"Time: {time}, Subject: {subject}")
+        elif "schedule" in query:
+            time = query.split(" ")[-1]
+            schedule = get_schedule_by_time(time)
+            if schedule:
+                print(f"Schedule for {time}:")
+                for day, subject in schedule:
+                    print(f"Day: {day}, Subject: {subject}")
+                    speak(f"Day: {day}, Subject: {subject}")
+            else:
+                print("Sorry, I couldn't find any schedule for that time.")
+                speak("Sorry, I couldn't find any schedule for that time.")
         else:
             speak("Hmmm.....")
             if query != 'None':
