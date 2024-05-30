@@ -152,11 +152,15 @@ def get_schedule(day, conn):
         # Fetch all results
         schedule = cursor.fetchall()
 
+        # Detailed debug prints
+        print("Type of fetched schedule:", type(schedule))
+        print("Length of fetched schedule:", len(schedule))
+        # print("Fetched schedule contents:")
+        # for entry in schedule:
+        #     print(entry)  # Print each entry in the schedule
+
         # Close the cursor
         cursor.close()
-
-        # Debugging: print the fetched schedule
-        # print("Fetched schedule:", schedule)
 
         return schedule
 
@@ -184,6 +188,31 @@ def get_current_class(conn):
         if start_time <= current_time <= end_time:
             return subject.strip()
     return "No class at this time"
+
+def get_class_by_time(time, day, conn):
+    # Retrieve the schedule for the specified day
+    schedule = get_schedule(day, conn)
+
+    # Check if there is a class at the specified time
+    for entry in schedule:
+        time_range, subject = entry[2], entry[3]  # Extracting time range and subject
+        start_time, end_time = time_range.split('-')
+        start_time = start_time.strip()
+        end_time = end_time.strip()
+
+        if start_time <= time <= end_time:
+            return subject.strip()
+    return "No class at this time"
+
+def get_class_by_period(period_number, day, conn):
+    # Retrieve the schedule for the specified day
+    schedule = get_schedule(day, conn)
+
+    # Check if there is a class for the specified period number
+    if 1 <= period_number <= len(schedule):
+        entry = schedule[period_number - 1]  # Adjusting for zero-based indexing
+        return entry[3].strip()  # Assuming the subject is in the fourth column
+    return "Invalid period number"
 
 # Main class for the main program
 if __name__ == "__main__":
@@ -253,9 +282,6 @@ if __name__ == "__main__":
                 webbrowser.open("https://ro706.github.io/play-with-number/")
             else:
                 speak("Sorry, I didn't get that. Can you please repeat?")
-        elif "time" in query:
-            time_now = time.strftime("%I:%M %p")  # Time format 24 hours
-            speak(time_now)
         elif "hello" in query:
             wish.wishme()  # Calling wishme function
         elif "spotify" in query:
@@ -323,7 +349,7 @@ if __name__ == "__main__":
                         print("Schedule for", day_to_query)
                         for entry in schedule:
                             print("Time:", entry[2], "| Subject:", entry[3])
-                            speak("Time:", entry[2], "| Subject:", entry[3])
+                            speak(f"Subject:{entry[3]}")
                     else:
                         print("No schedule found for", day_to_query)
                 finally:
@@ -331,6 +357,24 @@ if __name__ == "__main__":
                     close_connection(conn)
             else:
                 print("Unable to establish connection to the database")
+        elif "schedule by time" in query:
+            speak("Which time table do you want to see?")
+            time = input("Enter time: ")
+
+            # Establish connection to the database
+            conn = establish_connection()
+            day = datetime.now().strftime("%A")
+            class_at_time = get_class_by_time(time, day, conn)
+            print(f"Class at {time} on {day}: {class_at_time}")
+            close_connection(conn)
+        elif "period" and "schedule" in query:
+            speak("Which period do you want to see?")
+            period_number = int(input("Enter a period number: "))
+            day = datetime.now().strftime("%A")
+            conn = establish_connection()
+            class_at_period = get_class_by_period(period_number, day, conn)
+            print(f"Class at period {period_number} on {day}: {class_at_period}")
+            close_connection(conn)
         elif "schedule" in query:
             # Establish connection to the database
             conn = establish_connection()
@@ -341,12 +385,15 @@ if __name__ == "__main__":
                     # Display the current class schedule
                     current_class = get_current_class(conn)
                     print("Current class:", current_class)
-                    speak("Current class:{current_class}")
+                    # speak("Current class:{current_class}")
                 finally:
                     # Close connection to the database
                     close_connection(conn)
             else:
                 print("Unable to establish connection to the database")
+        elif "time" in query:
+            time_now = time.strftime("%I:%M %p")  # Time format 24 hours
+            speak(time_now)
         else:
             speak("Hmmm.....")
             if query != 'None':
