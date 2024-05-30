@@ -116,30 +116,47 @@ class Cpu:
         time.sleep(0.9)
 
 # Function to get schedule from the database
-def get_schedule(day: str) -> List[Tuple[str, str]]:
+
+def establish_connection():
     try:
-        # Connect to the MySQL database
         conn = pymysql.connect(
             host='localhost',
             user='root',
             password='root123',
             database='friday'
         )
-        cursor = conn.cursor()
+        print("Connection to MySQL database established successfully!")
+        return conn
+    except pymysql.MySQLError as e:
+        print(f"Error: {e}")
+        return None
 
-        # Extract the day name from the datetime object
-        day_name = day.strftime("%A")
+# Function to close the MySQL connection
+def close_connection(conn):
+    try:
+        if conn:
+            conn.close()
+            print("Connection to MySQL database closed.")
+    except pymysql.MySQLError as e:
+        print(f"Error: {e}")
+
+# Function to fetch the schedule from the database
+def get_schedule(day, conn):
+    try:
+        cursor = conn.cursor()
 
         # Query to fetch the schedule for the given day
-        query = "SELECT time, subject FROM timetable_a_sem1 WHERE day = %s"
-        cursor.execute(query, (day_name,))
+        query = "SELECT * FROM timetable_a_sem1 WHERE day = %s"
+        cursor.execute(query, (day,))
 
         # Fetch all results
         schedule = cursor.fetchall()
 
-        # Close the cursor and connection
+        # Close the cursor
         cursor.close()
-        conn.close()
+
+        # Debugging: print the fetched schedule
+        # print("Fetched schedule:", schedule)
 
         return schedule
 
@@ -147,34 +164,27 @@ def get_schedule(day: str) -> List[Tuple[str, str]]:
         print(f"Error: {err}")
         return []
 
-def get_schedule_by_time(time: str) -> List[Tuple[str, str]]:
-    try:
-        # Connect to the MySQL database
-        conn = pymysql.connect(
-            host='localhost',
-            user='root',
-            password='root123',
-            database='friday'
-        )
-        cursor = conn.cursor()
+# Function to get the current class
+def get_current_class(conn):
+    # Get the current time and day
+    now = datetime.now()
+    current_time = now.strftime("%H:%M")
+    day = now.strftime("%A")
 
-        # Query to fetch the schedule for the given time
-        query = "SELECT day, subject FROM timetable_a_sem1 WHERE time = %s"
-        cursor.execute(query, (time,))
-        if cursor.rowcount == 0:
-            speak("free time boss")
-        # Fetch all results
-        schedule = cursor.fetchall()
+    # Retrieve the schedule for today
+    schedule = get_schedule(day, conn)
 
-        # Close the cursor and connection
-        cursor.close()
-        conn.close()
+    # Check the current class
+    for entry in schedule:
+        time_range, subject = entry[2], entry[3]  # Extracting time range and subject
+        start_time, end_time = time_range.split('-')
+        start_time = start_time.strip()
+        end_time = end_time.strip()
 
-        return schedule
+        if start_time <= current_time <= end_time:
+            return subject.strip()
+    return "No class at this time"
 
-    except pymysql.MySQLError as err:
-        print(f"Error: {err}")
-        return []
 # Main class for the main program
 if __name__ == "__main__":
     wish.wishme()
@@ -194,9 +204,7 @@ if __name__ == "__main__":
         # Listening section for commands or prompts
         query = obj.listen()
         try:
-            speak(query)
-            # print('user said: ')
-            # print(query) # for debugging
+            print('user said:',query) # for debugging
 
         except Exception as e:
             print(e)
@@ -297,24 +305,48 @@ if __name__ == "__main__":
             print(joke)
             speak(joke)
         elif "complete schedule" in query:
-            # Schedule section: fetching schedule from the database
-            today = datetime.today()
-            schedule = get_schedule(today)
-            print(f"Schedule for {today.strftime('%A')}:")
-            for time, subject in schedule:
-                print(f"Time: {time}, Subject: {subject}")
-                speak(f"Time: {time}, Subject: {subject}")
-        elif "schedule" in query:
-            time = query.split(" ")[-1]
-            schedule = get_schedule_by_time(time)
-            if schedule:
-                print(f"Schedule for {time}:")
-                for day, subject in schedule:
-                    print(f"Day: {day}, Subject: {subject}")
-                    speak(f"Day: {day}, Subject: {subject}")
+            # Establish connection to the database
+            conn = establish_connection()
+
+            # Check if connection is successfully established
+            if conn:
+                try:
+                    # Define the day for which you want to retrieve the schedule
+                    now = datetime.now()
+                    day_to_query = now.strftime("%A") # Example: You can replace "Thursday" with any other day of the week
+                    
+                    # Retrieve the schedule for the specified day
+                    schedule = get_schedule(day_to_query, conn)
+                    
+                    # Process the retrieved schedule
+                    if schedule:
+                        print("Schedule for", day_to_query)
+                        for entry in schedule:
+                            print("Time:", entry[2], "| Subject:", entry[3])
+                            speak("Time:", entry[2], "| Subject:", entry[3])
+                    else:
+                        print("No schedule found for", day_to_query)
+                finally:
+                    # Close connection to the database
+                    close_connection(conn)
             else:
-                print("Sorry, I couldn't find any schedule for that time.")
-                speak("Sorry, I couldn't find any schedule for that time.")
+                print("Unable to establish connection to the database")
+        elif "schedule" in query:
+            # Establish connection to the database
+            conn = establish_connection()
+
+            # Check if connection is successfully established
+            if conn:
+                try:
+                    # Display the current class schedule
+                    current_class = get_current_class(conn)
+                    print("Current class:", current_class)
+                    speak("Current class:{current_class}")
+                finally:
+                    # Close connection to the database
+                    close_connection(conn)
+            else:
+                print("Unable to establish connection to the database")
         else:
             speak("Hmmm.....")
             if query != 'None':
