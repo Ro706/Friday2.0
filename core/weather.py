@@ -41,3 +41,5 @@ def tellmeTodaysWeather(): #this function will tell weather of nagpur city
 
 
 
+if __name__ == "__main__": #this is a main function
+    tellmeTodaysWeather() #this will call tellmeTodaysWeather function

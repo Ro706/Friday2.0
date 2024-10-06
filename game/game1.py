@@ -2,7 +2,7 @@ def game():
     #this is a INTERMEDIATE LEVEL tic-tac-toe game
     #I bet you will win if you have good strategy thinking
     from random import choice #To select who will play first between player and computer
-    from time   import sleep  #
+    from time   import sleep  #To make the game more interactive 
 
     print("********GIVE STAR ONLY IF YOU LIKE************")
     print()
@@ -246,3 +246,9 @@ def game():
         if not PlayAgain():
             print("********GIVE STAR ONLY IF YOU LIKE********")
             break
+
+
+
+
+if __name__ == "__main__":
+    game()
