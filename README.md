@@ -113,6 +113,7 @@ python main.py
 
 - **game.game1**: Tic-tac-toe game.
 - **game.game2**: Ghost game.
+- **play with number game**: Number game 
 
 ### Other Libraries
 
